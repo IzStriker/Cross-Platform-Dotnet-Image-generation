@@ -33,7 +33,13 @@ var cartesianChart = new SKCartesianChart
     }
 };
 
-// you can save the image to png (by default)
+// save png to memory stream
 // or use the second argument to specify another format.
-cartesianChart.SaveImage("cartesianChart.png");
+using var image = cartesianChart.GetImage();
+using var data = image.Encode();
+var base64CartesianChart = Convert.ToBase64String(data.AsSpan());
+var bytes = Convert.FromBase64String(base64CartesianChart);
+MemoryStream ms = new MemoryStream(bytes);
+
 Console.WriteLine("Images saved at the root folder!");
+Console.WriteLine(base64CartesianChart);
